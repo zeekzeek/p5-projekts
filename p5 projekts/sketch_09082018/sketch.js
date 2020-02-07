@@ -25,7 +25,7 @@ function draw() {
 	text (words[xp], 10, 20);
 	text (hr + ':' + nf(mn,2) + ':' + nf(sc,2), 10, 150);
 	pop();
-	console.log(words[xp].length);
+	//console.log(words[xp].length);
 }
 
 function refr() {

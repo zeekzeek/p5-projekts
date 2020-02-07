@@ -16,7 +16,6 @@ function draw() {
   if (isMoving) {
     e.moveDown();
   }
-  
   if (isMovingB){
     e.moveUp();
   }
