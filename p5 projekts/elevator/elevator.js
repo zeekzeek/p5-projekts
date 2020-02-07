@@ -6,21 +6,20 @@ class Elevator {
     this.size = 100;
   }
 
-  move() {
+  move(){
     this.y = this.y + 2;
   }
 
   boundary() {
-    if (this.y > windowWidth){
+    if (this.y > 500){
       this.y = 0;
     } else if (this.y < 0){
-          this.y = windowHeight/2;
-        }
+      this.y = windowHeight/2;
+    }
   }
 
   display() {
-    rect(this.x,this.y,this.size,this.size);
-    fill(255);
+      rect(this.x,this.y,this.size,this.size);
+      fill(255,125,60);
   }
-
 }

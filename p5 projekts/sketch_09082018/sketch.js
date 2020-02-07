@@ -33,7 +33,8 @@ function refr() {
 	if (counter > 500) {
 		background(0);
 		counter = 0;
-		setup();
+		reStart();
+		//setup();
 		xp = xp + 1;
 		//circle.splice(0,1);
 	}
@@ -42,11 +43,15 @@ function refr() {
 	}
 }
 
-function setup() {
+function reStart(){
 	createCanvas(windowWidth, windowHeight);
 	for (var i = 0; i < random(20, 50); i++) {
 		circle[i] = new Circle();
 	}
+}
+
+function setup() {
+	reStart();
 }
 
 function Circle() {
