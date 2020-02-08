@@ -2,25 +2,30 @@ class Elevator {
 
   constructor(){
     this.x = windowWidth/2;
-    this.y = windowHeight/2;
+    this.y = firstFloorLvl;
     this.size = 100;
   }
 
-  move() {
+  moveUp(){
     this.y = this.y + 2;
   }
 
+  moveDown(){
+    this.y = this.y - 2;
+  }
+
   boundary() {
-    if (this.y > windowWidth){
-      this.y = 0;
+    if (this.y > 500){
+      this.y = firstFloorLvl;
+      isMoving = !isMoving;
     } else if (this.y < 0){
-          this.y = windowHeight/2;
-        }
+      this.y = 0;
+      isMovingB = !isMovingB;
+    }
   }
 
   display() {
-    rect(this.x,this.y,this.size,this.size);
-    fill(255);
+      rect(this.x,this.y,this.size,this.size);
+      fill(255,125,60);
   }
-
 }
