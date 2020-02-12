@@ -1,0 +1,5 @@
+paddle - move left or right
+ball - bounce off surfaces and bricks of different sizes
+ball meets paddle
+ball hits brick
+start/end game
