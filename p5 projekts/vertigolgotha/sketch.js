@@ -1,6 +1,6 @@
 let cols;
 let rows;
-// the list of songs:
+// var song;
 var songs = ['01_klined.ogg',
             '02_andys.ogg',
             '03_ghost.ogg',
@@ -16,11 +16,16 @@ var currentSong = 0;          // current song number
 
 function preload() {
   img = loadImage('vertigolgotha.jpg');
-  song = loadSound('vertogg/' + songs[currentSong]);
+  song = loadSound('vertogg/' + songs[2]);
 }
 
 function setup() {
   createCanvas (windowWidth, windowHeight);
+  song.setVolume(1);
+  song.play();
+  slider = createSlider(0, 255, 100);
+  slider.position(width/3, height/2);
+  slider.style('width', '160px');
 }
 
 function draw() {
@@ -30,8 +35,6 @@ function draw() {
       image(img, x * img.width, y * img.height);
     }
   }
-  song.setVolume(0.5);
-  song.play;
   bgRep();
 }
 
