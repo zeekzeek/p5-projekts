@@ -7,11 +7,9 @@ let sc;
 let textPosX = 50;
 let textPosY = 150;
 let button;
-let songsPlay = [];
 let playSwitch = false;
-let spl = songsPlay[currentSong];
 
-let songs = ['01_klined.ogg',
+var songs = ['01_klined.ogg',
             '02_andys.ogg',
             '03_ghost.ogg',
             '04_flicker.ogg',
@@ -21,20 +19,8 @@ let songs = ['01_klined.ogg',
             '08_press.ogg',
             '09_she.ogg'];
 
-//var songCount = songs.length; // number of songs in the music dir
-
+var songCount = songs.length; // number of songs in the music dir
 var currentSong = 0;          // current song number
-
-function loadSongs() {
-  for (i = 0; i < songs.length; i++) {
-    songsPlay[i] = loadSound('vertogg/' + songs[i], loaded);
-  }
-}
-
-function loaded() {
-  console.log("All songs loaded.");
-  //playSong();
-}
 
 function preload() {
   imgOpen = loadImage('vertigolgotha.jpg');
@@ -43,8 +29,12 @@ function preload() {
 
 function setup() {
   createCanvas (windowWidth, windowHeight);
-  loadSongs();
-  spl.setVolume(0.1);
+  song = loadSound('vertogg/' + songs[currentSong], loaded);
+  song.setVolume(0.1); //VOLUME!
+}
+
+function loaded() {
+  song.play();
 }
 
 function mousePressed() {
@@ -52,16 +42,12 @@ function mousePressed() {
 }
 
 function draw() {
-  if(hr >= 10 && hr <= 14) {
-    vertActive();
-  } else {
-    vertClosed();
-  }
-vertClock();
+  if(hr >= 3 && hr <= 8) {
+  vertActive();
+} else {
+  vertClosed();
 }
-
-function timeStatus() {
-
+vertClock();
 }
 
 function vertActive() {
@@ -80,8 +66,11 @@ function vertActive() {
     }
   }
   text(songs[currentSong], textPosX, textPosY+25)
-  text(nfc(spl.currentTime(), 2), textPosX, textPosY+50);
-  console.log(songs[currentSong], song.currentTime(), currentSong);
+  playNext();
+  if (playSwitch) {
+    currentSong = currentSong + 1;
+  }
+  console.log(songs[currentSong], song.currentTime(), currentSong, playSwitch);
 }
 
 function mousePressed() {
@@ -119,30 +108,17 @@ function vertClock() {
   }
 }
 
-function toggleNext() {
-  currentSong = currentSong + 1;
+function playNext() {
+  if (song.currentTime() === song.duration()) {
+    togglePlaySwitch();
+  }
+  if (currentSong > 8) {
+    currentSong = 0;
+  }
 }
 
 function togglePlaySwitch() {
   playSwitch = !playSwitch;
-}
-
-function nextSong() {
-currentSong = currentSong + 1;
-}
-
-function playSong() {
-  if (currentSong < songs.length + 1) {
-
-    spl.jump(70,2);
-
-  } else if (!spl.isPlaying()) {
-
-    console.log("endedSong else is triggered");
-    //togglePlay();
-
-  };
-
 }
 
 /*
