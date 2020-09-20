@@ -1,4 +1,4 @@
-let song = [];
+var song;
 let cols;
 let rows;
 let hr;
@@ -8,7 +8,6 @@ let textPosX = 50;
 let textPosY = 150;
 let button;
 let playSwitch = false;
-//
 
 var songs = ['01_klined.ogg',
             '02_andys.ogg',
@@ -30,11 +29,8 @@ function preload() {
 
 function setup() {
   createCanvas (windowWidth, windowHeight);
-  for (let i = 0; i < songs.length; i++) {
-  song[i] = loadSound('vertogg/' + songs[i], loaded);
-}
-  song[currentSong].setVolume(0.1); //VOLUME!
-  song[currentSong].onended(toggleNext);
+  song = loadSound('vertogg/' + songs[currentSong], loaded);
+  song.setVolume(0.1); //VOLUME!
 }
 
 function loaded() {
@@ -71,7 +67,15 @@ function vertActive() {
   }
   text(songs[currentSong], textPosX, textPosY+25)
   //playNext();
-  console.log(songs[currentSong], song[currentSong].currentTime(), currentSong);
+  console.log(songs[currentSong], song.currentTime(), currentSong, playSwitch);
+}
+
+function mousePressed() {
+
+}
+
+function mouseReleased() {
+
 }
 
 function vertClosed() {
@@ -101,17 +105,22 @@ function vertClock() {
   }
 }
 
-function toggleNext() {
-  currentSong = currentSong + 1;
+function playNext() {
+  if (song.currentTime() === song.duration()) {
+    togglePlaySwitch();
+  }
+  if (currentSong > 8) {
+    currentSong = 0;
+  }
+}
+
+function togglePlaySwitch() {
   playSwitch = !playSwitch;
 }
 
 function playSongOnLoad() {
-  if (!song[currentSong].isPlaying()) {
-    song[currentSong].jump(70, 2);
-  }
+  song.jump(70,2);
 }
-
 /*
 resources:
 background tile resource: https://forum.processing.org/two/discussion/22996/repeat-an-image-as-a-background
