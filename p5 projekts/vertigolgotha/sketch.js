@@ -1,4 +1,4 @@
-let song = [];
+let songPlay = [];
 let cols;
 let rows;
 let hr;
@@ -31,14 +31,18 @@ function preload() {
 function setup() {
   createCanvas (windowWidth, windowHeight);
   for (let i = 0; i < songs.length; i++) {
-  song[i] = loadSound('vertogg/' + songs[i], loaded);
+  songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
 }
-  song[currentSong].setVolume(0.1); //VOLUME!
-  song[currentSong].onended(toggleNext);
+  songPlay[currentSong].setVolume(0.1); //VOLUME!
+  playButton = createButton('Play');
+  playButton.mousePressed(playSongOnLoad);
+  playButton.style('color', '#000000');
+  playButton.style('font-size', '10px');
+  playButton.size(100, 25);
 }
 
 function loaded() {
-  playSongOnLoad();
+
 }
 
 function mousePressed() {
@@ -46,7 +50,7 @@ function mousePressed() {
 }
 
 function draw() {
-  if (hr >= 3 && hr <= 8) {
+  if (hr >= 15 && hr <= 17) {
     vertActive();
   } else {
     vertClosed();
@@ -69,18 +73,27 @@ function vertActive() {
       image(imgOpen, x * imgOpen.width, y * imgOpen.height);
     }
   }
-  text(songs[currentSong], textPosX, textPosY+25)
-  //playNext();
-  console.log(songs[currentSong], song[currentSong].currentTime(), currentSong);
+  push();
+  textSize(20);
+  textFont('Helvetica');
+  noStroke();
+  text(songs[currentSong], textPosX, textPosY+25);
+  stroke(255);
+  pop();
+  playButton.position(textPosX, textPosY+35);
+  console.log(songs[currentSong]);
 }
 
 function vertClosed() {
   background(200,125,12);
   fill(255);
+  push();
   textSize(20);
   textFont('Helvetica');
-  text("sorry, we're closed", textPosX, textPosY + 20);
+  noStroke();
+  text("nothing can be found here.", textPosX, textPosY + 25);
   stroke(255);
+  pop();
   //image(imgClosed, width/2, height/3);
 }
 
@@ -95,23 +108,50 @@ function vertClock() {
   text ('current time:' + ' ' + nf(hr,2) + ':' + nf(mn,2) + ':' + nf(sc,2), textPosX, textPosY);
   pop();
   if (hr >= 0 && hr < 12) {
+    push();
+    noStroke();
+    textSize(20);
+    fill(255);
     text ('a.m.', textPosX + 197, textPosY-1)
+    pop();
   } else {
+    push();
+    noStroke();
+    textSize(20);
+    fill(255);
     text ('p.m.', textPosX + 197, textPosY-1)
+    pop();
   }
 }
 
 function toggleNext() {
+  if (currentSong < songs.length) {
   currentSong = currentSong + 1;
+} else if (currentSong > songs.length) {
+  currentSong = 0;
+}
   playSwitch = !playSwitch;
 }
 
 function playSongOnLoad() {
-  if (!song[currentSong].isPlaying()) {
-    song[currentSong].jump(70, 2);
+  if (!songPlay[currentSong].isPlaying()) {
+    playButton.html("Pause");
+    songPlay[currentSong].jump(70, 2);
+  } else if (songPlay[currentSong].isPlaying()) {
+    songPlay[currentSong].pause();
+    playButton.html("Play");
   }
+  if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
+    toggleNext();
+  }
+
 }
 
+function endedSong() {
+  if (currentSong < songs.length) {
+    playSongOnLoad();
+  }
+}
 /*
 resources:
 background tile resource: https://forum.processing.org/two/discussion/22996/repeat-an-image-as-a-background
