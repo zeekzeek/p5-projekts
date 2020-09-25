@@ -7,7 +7,6 @@ let sc;
 let textPosX = 50;
 let textPosY = 150;
 let button;
-let playSwitch = false;
 //
 
 var songs = ['01_klined.ogg',
@@ -22,6 +21,7 @@ var songs = ['01_klined.ogg',
 
 var songCount = songs.length; // number of songs in the music dir
 var currentSong = 0;          // current song number
+var songTitle = -1;
 
 function preload() {
   imgOpen = loadImage('vertigolgotha.jpg');
@@ -33,7 +33,6 @@ function setup() {
   for (let i = 0; i < songs.length; i++) {
   songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
 }
-  songPlay[currentSong].setVolume(0.1); //VOLUME!
   playButton = createButton('Play');
   playButton.mousePressed(playSongOnLoad);
   playButton.style('color', '#000000');
@@ -50,7 +49,7 @@ function mousePressed() {
 }
 
 function draw() {
-  if (hr >= 15 && hr <= 17) {
+  if (hr >= 8 && hr <= 12) {
     vertActive();
   } else {
     vertClosed();
@@ -73,6 +72,7 @@ function vertActive() {
       image(imgOpen, x * imgOpen.width, y * imgOpen.height);
     }
   }
+  //songTitle = currentSong - 1;
   push();
   textSize(20);
   textFont('Helvetica');
@@ -81,7 +81,7 @@ function vertActive() {
   stroke(255);
   pop();
   playButton.position(textPosX, textPosY+35);
-  console.log(songs[currentSong]);
+  console.log(songTitle);
 }
 
 function vertClosed() {
@@ -128,9 +128,9 @@ function toggleNext() {
   if (currentSong < songs.length) {
   currentSong = currentSong + 1;
 } else if (currentSong > songs.length) {
+  songPlay[currentSong].stop();
   currentSong = 0;
 }
-  playSwitch = !playSwitch;
 }
 
 function playSongOnLoad() {
@@ -141,7 +141,7 @@ function playSongOnLoad() {
     songPlay[currentSong].pause();
     playButton.html("Play");
   }
-  if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
+    if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
     toggleNext();
   }
 
