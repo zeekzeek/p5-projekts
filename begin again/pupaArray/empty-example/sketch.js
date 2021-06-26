@@ -30,8 +30,8 @@ function draw() {
 
 class Texter {
   constructor(x, y) {
-    this.x = x;
-    this.y = y;
+      this.x = x;
+      this.y = y;
   }
 
   counter() {
@@ -46,7 +46,7 @@ class Texter {
 
   show() {
     textSize(wordSize);
-          text(words[count], this.x, this.y);
+    text(words[count], this.x, this.y);
     fill(255);
   }
 }
