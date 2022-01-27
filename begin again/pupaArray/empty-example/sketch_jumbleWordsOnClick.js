@@ -12,10 +12,8 @@ function setup() {
 
 function draw() {
   background (200, 160, 125);
-  for (let i = 0; i < wordsContain.length; i++) {
     wordsContain[i].counter();
     wordsContain[i].show();
-  }
   console.log(count);
 }
 
