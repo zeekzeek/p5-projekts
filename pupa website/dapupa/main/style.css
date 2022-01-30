@@ -1,0 +1,33 @@
+html {
+  font-size: 30px; /* px means "pixels": the base font size is now 10 pixels high  */
+  font-family: "Arimo", sans-serif; /* this should be the rest of the output you got from Google fonts */
+  background-color: #353535
+}
+
+body {
+  width: 800px;
+  margin: 0 auto;
+  padding: 0 20px 20px 20px;
+  border: 2px solid black;
+  background-color: #DAD7D6
+}
+
+h1 {
+  text-align: center;
+  font-size: 40px;
+  margin: 0; /* there is a gap in default. margin 0 removes the gap and moves the header to the top of the page*/
+  padding: 20px 0;
+  text-shadow: 3px 3px 1px white;
+}
+
+p {
+  text-align: center;
+  line-height: 2; /* also responses to 2px, would take it literally though. 2 is a multiple of the default spacing */
+  letter-spacing: 2px;
+}
+
+img {
+  display: block;
+  margin: 0 auto;
+  width: 800px;
+}
