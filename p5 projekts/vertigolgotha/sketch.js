@@ -97,7 +97,7 @@ function vertActive() {
   playButton.position(textPosX, textPosY + 35);
   nextButton.position(textPosX+ 100, textPosY + 35);
   stopButton.position(textPosX, textPosY + 60);
-  console.log(songTitle);
+  //console.log(currentSong);
 }
 
 function vertClosed() {
@@ -147,6 +147,7 @@ function toggleNext() {
     songPlay[currentSong].stop();
     currentSong = 0;
   }
+  songPlay[currentSong-1].stop();
 }
 
 function playSongOnLoad() {
@@ -162,11 +163,11 @@ function playSongOnLoad() {
   // }
 }
 
-function endedSong() {
-  if (currentSong < songs.length) {
-    playSongOnLoad();
-  }
-}
+// function endedSong() {
+//   if (currentSong < songs.length) {
+//     playSongOnLoad();
+//   }
+// }
 
 function stopSong() {
   songPlay[currentSong].stop();
