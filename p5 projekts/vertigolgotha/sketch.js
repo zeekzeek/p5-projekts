@@ -10,17 +10,18 @@ let button;
 //
 
 var songs = ['01_klined.ogg',
-            '02_andys.ogg',
-            '03_ghost.ogg',
-            '04_flicker.ogg',
-            '05_rest.ogg',
-            '06_killer.ogg',
-            '07_shaffoal.ogg',
-            '08_press.ogg',
-            '09_she.ogg'];
+  '02_andys.ogg',
+  '03_ghost.ogg',
+  '04_flicker.ogg',
+  '05_rest.ogg',
+  '06_killer.ogg',
+  '07_shaffoal.ogg',
+  '08_press.ogg',
+  '09_she.ogg'
+];
 
 var songCount = songs.length; // number of songs in the music dir
-var currentSong = 0;          // current song number
+var currentSong = 0; // current song number
 var songTitle = -1;
 
 function preload() {
@@ -29,15 +30,27 @@ function preload() {
 }
 
 function setup() {
-  createCanvas (windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight);
   for (let i = 0; i < songs.length; i++) {
-  songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
-}
+    songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
+  }
   playButton = createButton('Play');
   playButton.mousePressed(playSongOnLoad);
   playButton.style('color', '#000000');
   playButton.style('font-size', '10px');
   playButton.size(100, 25);
+
+  nextButton = createButton('Next');
+  nextButton.mousePressed(toggleNext);
+  nextButton.style('color', '#000000');
+  nextButton.style('font-size', '10px');
+  nextButton.size(100, 25);
+
+  stopButton = createButton('Stop');
+  stopButton.mousePressed(stopSong);
+  stopButton.style('color', '#000000');
+  stopButton.style('font-size', '10px');
+  stopButton.size(100, 25);
 }
 
 function loaded() {
@@ -49,43 +62,46 @@ function mousePressed() {
 }
 
 function draw() {
-  if (hr >= 8 && hr <= 12) {
+  if (hr >= 8 && hr <= 22) {
     vertActive();
   } else {
     vertClosed();
   }
-vertClock();
+  vertClock();
 }
 
 function vertActive() {
-  cols = width/imgOpen.width;
-  rows = height/imgOpen.height;
+  cols = width / imgOpen.width;
+  rows = height / imgOpen.height;
   if (imgOpen.width % width > 0) {
     cols++;
   }
-  if(imgOpen.height % height > 0){
+  if (imgOpen.height % height > 0) {
     rows++;
   }
   background('#2a2c34');
-  for (let y = 0; y < rows; y++){
-    for (let x = 0; x < cols; x++){
+  for (let y = 0; y < rows; y++) {
+    for (let x = 0; x < cols; x++) {
       image(imgOpen, x * imgOpen.width, y * imgOpen.height);
     }
   }
-  //songTitle = currentSong - 1;
+  //i had to declare this because it was playing the next song by default. why?
+  songTitle = currentSong - 1;
   push();
   textSize(20);
   textFont('Helvetica');
   noStroke();
-  text(songs[currentSong], textPosX, textPosY+25);
+  text(songs[currentSong], textPosX, textPosY + 25);
   stroke(255);
   pop();
-  playButton.position(textPosX, textPosY+35);
+  playButton.position(textPosX, textPosY + 35);
+  nextButton.position(textPosX+ 100, textPosY + 35);
+  stopButton.position(textPosX, textPosY + 60);
   console.log(songTitle);
 }
 
 function vertClosed() {
-  background(200,125,12);
+  background(200, 125, 12);
   fill(255);
   push();
   textSize(20);
@@ -105,52 +121,56 @@ function vertClock() {
   textSize(20);
   fill(255);
   noStroke();
-  text ('current time:' + ' ' + nf(hr,2) + ':' + nf(mn,2) + ':' + nf(sc,2), textPosX, textPosY);
+  text('current time:' + ' ' + nf(hr, 2) + ':' + nf(mn, 2) + ':' + nf(sc, 2), textPosX, textPosY);
   pop();
   if (hr >= 0 && hr < 12) {
     push();
     noStroke();
     textSize(20);
     fill(255);
-    text ('a.m.', textPosX + 197, textPosY-1)
+    text('a.m.', textPosX + 197, textPosY - 1)
     pop();
   } else {
     push();
     noStroke();
     textSize(20);
     fill(255);
-    text ('p.m.', textPosX + 197, textPosY-1)
+    text('p.m.', textPosX + 197, textPosY - 1)
     pop();
   }
 }
 
 function toggleNext() {
   if (currentSong < songs.length) {
-  currentSong = currentSong + 1;
-} else if (currentSong > songs.length) {
-  songPlay[currentSong].stop();
-  currentSong = 0;
-}
+    currentSong = currentSong + 1;
+  } else if (currentSong > songs.length) {
+    songPlay[currentSong].stop();
+    currentSong = 0;
+  }
 }
 
 function playSongOnLoad() {
   if (!songPlay[currentSong].isPlaying()) {
     playButton.html("Pause");
-    songPlay[currentSong].jump(70, 2);
+    songPlay[currentSong].play(0);
   } else if (songPlay[currentSong].isPlaying()) {
-    songPlay[currentSong].pause();
-    playButton.html("Play");
+     songPlay[currentSong].pause();
+     playButton.html("Play");
   }
-    if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
-    toggleNext();
-  }
-
+  // if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
+  //   toggleNext();
+  // }
 }
 
 function endedSong() {
   if (currentSong < songs.length) {
     playSongOnLoad();
   }
+}
+
+function stopSong() {
+  songPlay[currentSong].stop();
+  playButton.html("Play");
 }
 /*
 resources:

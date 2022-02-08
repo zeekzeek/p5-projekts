@@ -1,0 +1,6 @@
+hello.
+
+okay found this website on git on how to create div and anchor elements using javascript variables.
+might be useful to position text over the canvas space.
+
+https://github.com/processing/p5.js/wiki/Beyond-the-canvas
