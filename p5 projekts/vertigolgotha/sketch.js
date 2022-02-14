@@ -1,3 +1,4 @@
+//songPlay is used as an array to load songs, using for loop refer to line 35
 let songPlay = [];
 let cols;
 let rows;
@@ -21,19 +22,21 @@ var songs = ['01_klined.ogg',
 ];
 
 var songCount = songs.length; // number of songs in the music dir
-var currentSong = 0; // current song number
+var currentSong; // current song number
 var songTitle = -1;
 
 function preload() {
   imgOpen = loadImage('vertigolgotha.jpg');
   imgClosed = loadImage('cityclosed.jpg')
+  //initiated now in preload (previously from setup, to ensure all tracks are uploaded now), all songs loaded from vertogg/ folder
+  for (let i = 0; i < songCount; i++) {
+    songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
+  }
 }
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  for (let i = 0; i < songs.length; i++) {
-    songPlay[i] = loadSound('vertogg/' + songs[i], loaded);
-  }
+  currentSong = 0;
   playButton = createButton('Play');
   playButton.mousePressed(playSongOnLoad);
   playButton.style('color', '#000000');
@@ -51,6 +54,12 @@ function setup() {
   stopButton.style('color', '#000000');
   stopButton.style('font-size', '10px');
   stopButton.size(100, 25);
+
+  previousButton = createButton('Previous');
+  previousButton.mousePressed(togglePrevious);
+  previousButton.style('color', '#000000');
+  previousButton.style('font-size', '10px');
+  previousButton.size(100, 25);
 }
 
 function loaded() {
@@ -62,12 +71,30 @@ function mousePressed() {
 }
 
 function draw() {
-  if (hr >= 8 && hr <= 22) {
+  if (hr >= 8 && hr <= 24) {
     vertActive();
   } else {
     vertClosed();
   }
   vertClock();
+
+  //managed to disable the previous button. by putting in attribute disabled syntax. i still need to add removeAttribute in the enabled condition.
+  if (currentSong >= 1) {
+    firstSong();
+    previousButton.removeAttribute('disabled')
+  } else {
+    previousButton.attribute('disabled', '');
+  }
+
+  //lastSong limit here
+  nextButton.position(textPosX + 100, textPosY + 35);
+  if (currentSong < 8) {
+    lastSong();
+    nextButton.removeAttribute('disabled')
+  } else {
+    nextButton.attribute('disabled', '');
+  }
+  //console.log(currentSong);
 }
 
 function vertActive() {
@@ -95,9 +122,7 @@ function vertActive() {
   stroke(255);
   pop();
   playButton.position(textPosX, textPosY + 35);
-  nextButton.position(textPosX+ 100, textPosY + 35);
   stopButton.position(textPosX, textPosY + 60);
-  //console.log(currentSong);
 }
 
 function vertClosed() {
@@ -113,6 +138,17 @@ function vertClosed() {
   //image(imgClosed, width/2, height/3);
 }
 
+//this is where I begin to limit the functionality of the previous and next buttons
+
+function firstSong() {
+    previousButton.position(textPosX + 100, textPosY + 60);
+}
+
+function lastSong() {
+  nextButton.position(textPosX + 100, textPosY + 35);
+}
+
+// putting in the clock stuff here
 function vertClock() {
   hr = hour();
   mn = minute();
@@ -141,22 +177,34 @@ function vertClock() {
 }
 
 function toggleNext() {
-  if (currentSong < songs.length) {
+  if (currentSong < songCount) {
     currentSong = currentSong + 1;
-  } else if (currentSong > songs.length) {
-    songPlay[currentSong].stop();
-    currentSong = 0;
+    songPlay[currentSong - 1].stop();
+    songPlay[currentSong].play();
+    playButton.html("Pause");
   }
-  songPlay[currentSong-1].stop();
+  if (currentSong > songCount) {
+
+  }
 }
+
+function togglePrevious() {
+  if (currentSong < songCount) {
+    currentSong = currentSong - 1;
+    songPlay[currentSong + 1].stop();
+    songPlay[currentSong].play();
+    playButton.html("Pause");
+  }
+}
+
 
 function playSongOnLoad() {
   if (!songPlay[currentSong].isPlaying()) {
     playButton.html("Pause");
-    songPlay[currentSong].play(0);
+    songPlay[currentSong].play();
   } else if (songPlay[currentSong].isPlaying()) {
-     songPlay[currentSong].pause();
-     playButton.html("Play");
+    songPlay[currentSong].pause();
+    playButton.html("Play");
   }
   // if (songPlay[currentSong].onended(endedSong) || currentSong < songs.length) {
   //   toggleNext();
